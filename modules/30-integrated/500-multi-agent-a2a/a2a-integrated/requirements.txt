@@ -1,0 +1,9 @@
+strands-agents[openai,otel]
+langfuse
+boto3
+bedrock-agentcore-starter-toolkit
+playwright
+mcp[cli]==1.29.0
+a2a-sdk[http-server]==0.3.26
+fastapi
+uvicorn

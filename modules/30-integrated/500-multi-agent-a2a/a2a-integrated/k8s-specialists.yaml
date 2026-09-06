@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-server
+  namespace: agents
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: mcp-server } }
+  template:
+    metadata: { labels: { app: mcp-server } }
+    spec:
+      containers:
+        - name: mcp-server
+          image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/mcp-server:v1
+          imagePullPolicy: Always
+          ports: [{ containerPort: 8080 }]
+          resources:
+            requests: { cpu: "256m", memory: "256Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: mcp-server, namespace: agents }
+spec:
+  selector: { app: mcp-server }
+  ports: [{ port: 8080, targetPort: 8080 }]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-agent
+  namespace: agents
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: order-agent } }
+  template:
+    metadata: { labels: { app: order-agent } }
+    spec:
+      serviceAccountName: agent
+      containers:
+        - name: order-agent
+          image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/order-agent:bedrock
+          imagePullPolicy: Always
+          ports: [{ containerPort: 8081 }]
+          envFrom:
+            - configMapRef: { name: agent-config }
+          env:
+            - name: MCP_SERVER_URL
+              value: "http://mcp-server.agents.svc.cluster.local:8080/mcp"
+          resources:
+            requests: { cpu: "256m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: order-agent, namespace: agents }
+spec:
+  selector: { app: order-agent }
+  ports: [{ port: 8081, targetPort: 8081 }]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sandbox-agent
+  namespace: agents
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: sandbox-agent } }
+  template:
+    metadata: { labels: { app: sandbox-agent } }
+    spec:
+      serviceAccountName: agent
+      containers:
+        - name: sandbox-agent
+          image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/product-agent:bedrock
+          imagePullPolicy: Always
+          ports: [{ containerPort: 8082 }]
+          envFrom:
+            - configMapRef: { name: agent-config }
+            - configMapRef: { name: agent-tools }
+          resources:
+            requests: { cpu: "256m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: sandbox-agent, namespace: agents }
+spec:
+  selector: { app: sandbox-agent }
+  ports: [{ port: 8082, targetPort: 8082 }]

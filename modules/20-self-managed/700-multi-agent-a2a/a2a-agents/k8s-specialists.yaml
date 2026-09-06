@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-agent
+  template:
+    metadata:
+      labels:
+        app: order-agent
+    spec:
+      containers:
+        - name: order-agent
+          image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/order-agent:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: LITELLM_BASE_URL
+              value: "http://litellm.litellm.svc.cluster.local:4000/v1"
+            - name: LITELLM_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: agent-config
+                  key: LITELLM_API_KEY
+            - name: MCP_SERVER_URL
+              value: "http://mcp-server.default.svc.cluster.local:8080/mcp"
+          resources:
+            requests: { cpu: "256m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-agent
+spec:
+  selector:
+    app: order-agent
+  ports:
+    - port: 8081
+      targetPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-agent
+  template:
+    metadata:
+      labels:
+        app: product-agent
+    spec:
+      containers:
+        - name: product-agent
+          image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/product-agent:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8082
+          env:
+            - name: LITELLM_BASE_URL
+              value: "http://litellm.litellm.svc.cluster.local:4000/v1"
+            - name: LITELLM_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: agent-config
+                  key: LITELLM_API_KEY
+            - name: MILVUS_URI
+              value: "http://milvus.milvus.svc.cluster.local:19530"
+          resources:
+            requests: { cpu: "500m", memory: "1Gi" }
+            limits: { cpu: "1", memory: "2Gi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-agent
+spec:
+  selector:
+    app: product-agent
+  ports:
+    - port: 8082
+      targetPort: 8082

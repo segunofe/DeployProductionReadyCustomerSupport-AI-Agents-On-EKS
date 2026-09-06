@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orchestrator-agent
+  template:
+    metadata:
+      labels:
+        app: orchestrator-agent
+    spec:
+      containers:
+        - name: orchestrator-agent
+          image: ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/orchestrator-agent:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8083
+          envFrom:
+            - configMapRef:
+                name: agent-config
+          env:
+            - name: ORDER_AGENT_URL
+              value: "http://order-agent.default.svc.cluster.local:8081"
+            - name: PRODUCT_AGENT_URL
+              value: "http://product-agent.default.svc.cluster.local:8082"
+          resources:
+            requests: { cpu: "256m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orchestrator-agent
+spec:
+  selector:
+    app: orchestrator-agent
+  ports:
+    - port: 8083
+      targetPort: 8083

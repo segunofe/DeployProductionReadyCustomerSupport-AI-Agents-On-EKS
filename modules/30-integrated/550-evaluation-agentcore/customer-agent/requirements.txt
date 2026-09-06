@@ -1,0 +1,9 @@
+strands-agents[openai,otel]
+langfuse
+boto3
+aws-opentelemetry-distro>=0.10.0
+# AgentCore Evaluations client (list/create evaluators, on-demand + online runs).
+# Fetches session spans from the aws/spans log group and scores them.
+bedrock-agentcore-starter-toolkit
+fastapi
+uvicorn

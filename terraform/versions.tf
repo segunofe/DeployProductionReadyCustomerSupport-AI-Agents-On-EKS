@@ -1,0 +1,37 @@
+terraform {
+  required_version = ">= 1.3"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.36"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.9.0, < 3.0.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.20.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.0"
+    }
+    archive = {
+      source  = "hashicorp/archive"
+      version = ">= 2.4"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.2"
+    }
+  }
+
+  # ##  Used for end-to-end testing on project; update to suit your needs
+  # backend "s3" {
+  #   bucket = "terraform-ssp-github-actions-state"
+  #   region = "us-west-2"
+  #   key    = "e2e/karpenter/terraform.tfstate"
+  # }
+}

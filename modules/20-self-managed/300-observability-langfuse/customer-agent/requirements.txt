@@ -1,0 +1,4 @@
+strands-agents[openai,otel]
+langfuse
+fastapi
+uvicorn

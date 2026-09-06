@@ -1,0 +1,8 @@
+strands-agents[openai,otel]
+strands-agents-tools
+langfuse
+pymilvus
+fastembed
+mcp[cli]==1.29.0
+fastapi
+uvicorn
