@@ -8,7 +8,13 @@ This repo documents a hands-on workshop for building a production-ready, agentic
 
 Both tracks share the same customer-facing agent code (built with the **Strands Agents SDK**) and the same **LiteLLM** model gateway — only the backing infrastructure changes.
 
+Customer Agent (Self-Managed GenAI)
 <img width="975" height="533" alt="image" src="https://github.com/user-attachments/assets/cde8e0c0-9487-4f41-b550-ceee680f036b" />
+
+
+Customer Agent (Integrated GenAI)
+<img width="975" height="574" alt="image" src="https://github.com/user-attachments/assets/4aa60467-805d-4456-b873-77c34d1a46c0" />
+
 
 ---
 
