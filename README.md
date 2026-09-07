@@ -5,6 +5,8 @@ This repo documents a hands-on workshop for building a production-ready, agentic
 1. **Strategy 1 — Self-Managed Track**: open-source components (vLLM, Milvus, Langfuse, Neo4j) running inside the EKS cluster.
 2. **Strategy 2 — Integrated / AWS-Managed Track**: the same agent logic, but swapping self-hosted pieces for AWS-managed services (Amazon Bedrock, AgentCore Memory, AgentCore Evaluations).
 
+For better understanding, instead of using Milvus for RAG and memory in Strategy 1, i used 
+
 Both tracks share the same customer-facing agent code (built with the **Strands Agents SDK**) and the same **LiteLLM** model gateway — only the backing infrastructure changes.
 
 ---
