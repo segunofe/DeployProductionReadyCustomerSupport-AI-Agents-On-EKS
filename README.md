@@ -1,6 +1,8 @@
 # Building Production-Ready Customer Support AI Agents on Amazon EKS
 
 This repo documents a hands-on workshop for building a production-ready, agentic AI customer service system for a fictional online retailer, **AnyCompany Shop**, on **Amazon EKS**. The workshop is split into two parallel strategies for running the same agent architecture:
+<img width="975" height="183" alt="image" src="https://github.com/user-attachments/assets/41ad3058-1db7-4ab6-a447-e8b8c1965406" />
+
 
 1. **Strategy 1 — Self-Managed Track**: open-source components (vLLM, Milvus, Langfuse, Neo4j) running inside the EKS cluster.
 2. **Strategy 2 — Integrated / AWS-Managed Track**: the same agent logic, but swapping self-hosted pieces for AWS-managed services (Amazon Bedrock, AgentCore Memory, AgentCore Evaluations).
@@ -28,6 +30,19 @@ Customer Agent (Integrated GenAI)
 | **LiteLLM** | Sits in front of vLLM, Bedrock, OpenAI, Azure, etc., acting as a single **model plane** that every agent talks to — one proxy, many providers, one API contract. |
 
 ---
+
+
+<img width="975" height="183" alt="image" src="https://github.com/user-attachments/assets/ad467138-2682-4918-80c5-455a6bb18187" />
+
+<img width="975" height="304" alt="image" src="https://github.com/user-attachments/assets/0cb8468f-154b-48f0-bec7-c7f4d6a29aa7" />
+<img width="975" height="165" alt="image" src="https://github.com/user-attachments/assets/32857f41-6bd5-4ee3-bcc5-4dc7a3810d30" />
+<img width="975" height="183" alt="image" src="https://github.com/user-attachments/assets/49ce275f-433e-4c16-8d66-b09fb0c425d9" />
+<img width="975" height="232" alt="image" src="https://github.com/user-attachments/assets/6ad5c055-2aab-41f4-a568-380d418c29af" />
+
+<img width="975" height="360" alt="image" src="https://github.com/user-attachments/assets/be048246-5461-430c-ab14-4f941a798cd2" />
+
+
+
 
 ## High-Level Architecture
 
