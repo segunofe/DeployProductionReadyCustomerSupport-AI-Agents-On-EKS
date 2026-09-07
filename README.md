@@ -112,6 +112,7 @@ Introduce **Milvus**, an open-source vector database built for large-scale simil
 
 ### Module 4 — Memory with Milvus
 <img width="975" height="707" alt="image" src="https://github.com/user-attachments/assets/a01a153d-acca-4557-af78-ce8557e73cfb" />
+
 Use Milvus a second time, but for a different job: **session memory**.
 
 | | RAG with Milvus | Memory with Milvus |
@@ -122,7 +123,13 @@ Use Milvus a second time, but for a different job: **session memory**.
 | Purpose | Ground answers in product knowledge | Continue the conversation with context |
 
 After this module, the agent correctly remembers prior turns (e.g., "Has it shipped yet?" correctly resolves to the previously mentioned order) instead of resetting each turn.
-AFTER MEMORY is added
+
+**BEFORE MEMORY is added**
+<img width="975" height="592" alt="image" src="https://github.com/user-attachments/assets/44f27543-4c91-494b-a560-f87f8477d6e4" />
+
+
+
+**AFTER MEMORY is added**
 <img width="975" height="626" alt="image" src="https://github.com/user-attachments/assets/92436cb4-a7ab-45a3-b0bb-93e18fc8f294" />
 
 
@@ -228,6 +235,7 @@ Custom evaluators (e.g., a tool-grounded `cs_accuracy` "Retail order-accuracy ev
 
 ### Observability → Amazon CloudWatch
 Agent spans (OpenTelemetry) flow into **CloudWatch Logs / GenAI Observability**, where they can be queried and visualized (e.g., span counts over time via CloudWatch Logs Insights) as the managed alternative to self-hosted Langfuse tracing.
+
 <img width="975" height="445" alt="image" src="https://github.com/user-attachments/assets/2771e799-a190-49f5-87dd-43a1e88247e7" />
 <img width="975" height="445" alt="image" src="https://github.com/user-attachments/assets/b1d47fa0-ccaf-4ee1-9208-7e0ca8d298fd" />
 <img width="975" height="447" alt="image" src="https://github.com/user-attachments/assets/482f9daa-7fab-44e2-a75e-a8fc7dda88f3" />
