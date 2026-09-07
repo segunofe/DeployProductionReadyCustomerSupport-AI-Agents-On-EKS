@@ -86,12 +86,32 @@ Build and deploy an AI-powered Customer Service Agent for AnyCompany Shop using 
 
 ### Module 2 — Observability with Langfuse
 Add **Langfuse**, an open-source LLM observability platform, to trace every call/request end-to-end. Langfuse ingests OpenTelemetry spans and renders them as structured, hierarchical traces of every LLM call, tool invocation, and agent decision — similar to Jaeger/Datadog APM but purpose-built for LLM apps (token counts, prompt/completion pairs, tool-call boundaries, and cost attribution out of the box).
+<img width="975" height="246" alt="image" src="https://github.com/user-attachments/assets/2ef639e0-65d3-4042-8a29-47f1dd9c2550" />
+<img width="865" height="371" alt="image" src="https://github.com/user-attachments/assets/1200fbff-2c10-4b91-94f0-b6304f2d77ec" />
+
+**User sends a message:** “Where is my order ORD-12345?”
+<img width="975" height="662" alt="image" src="https://github.com/user-attachments/assets/c327888a-cbb8-46d5-bd8e-4fec5ca641ee" />
+**Langfuse tracks the entire agent interaction:** the user input, LLM calls, tool/API calls, response, latency, and token usage.
+<img width="975" height="592" alt="image" src="https://github.com/user-attachments/assets/9d0f3c0b-fa31-4feb-b81e-255eb548557d" />
+
+
+
+
 
 ### Module 3 — RAG with Milvus
 Introduce **Milvus**, an open-source vector database built for large-scale similarity search (embeddings), supporting multiple index types (IVF, HNSW, DiskANN), hybrid search (vector + scalar filters), and scaling from single-pod standalone mode to a distributed cluster.
 - Seed a `product_catalog` collection (e.g., 13 seeded product items) and wire it into the agent as a `search_products` tool so answers are grounded in real product knowledge instead of hardcoded/mocked data.
+<img width="975" height="533" alt="image" src="https://github.com/user-attachments/assets/5b392ed3-d73e-4311-9279-c312663a38d1" />
+<img width="975" height="481" alt="image" src="https://github.com/user-attachments/assets/718a9adc-bbd2-4af3-acda-7baabe00c372" />
+<img width="920" height="784" alt="image" src="https://github.com/user-attachments/assets/3f7002bf-3b6f-4267-a1f7-a16a7040b1fa" />
+
+
+
+
+
 
 ### Module 4 — Memory with Milvus
+<img width="975" height="707" alt="image" src="https://github.com/user-attachments/assets/a01a153d-acca-4557-af78-ce8557e73cfb" />
 Use Milvus a second time, but for a different job: **session memory**.
 
 | | RAG with Milvus | Memory with Milvus |
@@ -102,11 +122,21 @@ Use Milvus a second time, but for a different job: **session memory**.
 | Purpose | Ground answers in product knowledge | Continue the conversation with context |
 
 After this module, the agent correctly remembers prior turns (e.g., "Has it shipped yet?" correctly resolves to the previously mentioned order) instead of resetting each turn.
+AFTER MEMORY is added
+<img width="975" height="626" alt="image" src="https://github.com/user-attachments/assets/92436cb4-a7ab-45a3-b0bb-93e18fc8f294" />
+
 
 ### Module 5 — MCP Server for Tools
 Build a dedicated **MCP server** (`server.py`) exposing order and inventory tools, deploy it to EKS, and connect the agent to it — replacing the old hardcoded `tools.py` mock. At startup, the agent retrieves the available tool list from the MCP server and passes it directly to `Agent(tools=...)`.
 
 **Why this stage?** LLMs are trained on static/flat data; MCP extends agentic systems with real-time access to external APIs/services, removing any dependency on hardcoded tool lists.
+
+<img width="975" height="444" alt="image" src="https://github.com/user-attachments/assets/63278095-2530-4603-a8fc-8e01b5131c1c" />
+<img width="975" height="553" alt="image" src="https://github.com/user-attachments/assets/8b37d063-4bbc-4f90-b661-efe1d71b4394" />
+<img width="975" height="550" alt="image" src="https://github.com/user-attachments/assets/578c8777-00c4-480b-8dda-3b5b29ae9bd8" />
+
+
+
 
 ### Module 6 — Multi-Agent with A2A
 Split the single "do-everything" agent into specialist agents that communicate over **A2A JSON-RPC**:
@@ -116,10 +146,29 @@ Split the single "do-everything" agent into specialist agents that communicate o
 
 **Why multi-agent?** A single agent handles simple workflows fine, but complexity exposes its limits — the system prompt grows, the LLM starts confusing similar tools, and updating one capability forces changes across the whole agent. A2A solves this with single-responsibility agents: one prompt, one job.
 
+<img width="975" height="276" alt="image" src="https://github.com/user-attachments/assets/4e36bde4-3323-473f-8748-a162c4b49c91" />
+
+**Product Agent responding** 
+<img width="975" height="604" alt="image" src="https://github.com/user-attachments/assets/04e5cfdc-9b38-406b-a50e-b379465a7a3f" />
+<img width="975" height="550" alt="image" src="https://github.com/user-attachments/assets/1aa79f4f-4fd6-4393-852a-446a06ad3248" />
+
+
+**Order Agent responding** 
+<img width="975" height="316" alt="image" src="https://github.com/user-attachments/assets/505ff6f1-645f-4a1a-b2a7-5f2466454a41" />
+<img width="975" height="578" alt="image" src="https://github.com/user-attachments/assets/1530905f-e767-4df8-99ee-449a7a6b62ed" />
+
+
 ### Module 7 — Evaluation (LLM-as-a-Judge)
 Goal: judge the LLM's responses so agent output quality can be continuously monitored.
 - Configure one **managed evaluator** plus **two custom evaluators** in Langfuse (e.g., `cs-accuracy`, `cs-safety`, `Helpfulness`), pointed at a judge model (e.g., `claude-sonnet-4-5`) via a LiteLLM connection.
 - Evaluators run automatically against live incoming traces/observations and produce scores (e.g., accuracy score per response) visible in the Langfuse Evaluators dashboard.
+<img width="975" height="261" alt="image" src="https://github.com/user-attachments/assets/14c42251-7124-4242-bf26-20fee3cda39b" />
+
+**Using the cs-accuracy evaluator**
+<img width="975" height="381" alt="image" src="https://github.com/user-attachments/assets/ade3f043-3ffb-4838-8701-acf6c715fb2b" />
+
+
+
 
 ### Module 8 — Knowledge Graph (Neo4j)
 Add a **knowledge graph** layer using Neo4j alongside the existing vector RAG.
@@ -133,6 +182,11 @@ Add a **knowledge graph** layer using Neo4j alongside the existing vector RAG.
 
 - Seed the graph with `Category`, `Customer`, `Order`, `Policy`, and `Product` nodes connected via `CONTAINS`, `HAS_POLICY`, `IN_CATEGORY`, and `PLACED` relationships.
 - Add a `customer_history` tool so the agent can answer relational questions like "What has Jane Doe ordered before?" by traversing the graph instead of doing a vector search.
+<img width="975" height="973" alt="image" src="https://github.com/user-attachments/assets/121ed943-6842-432e-b2bc-a6a381b16e44" />
+<img width="975" height="449" alt="image" src="https://github.com/user-attachments/assets/abec15d5-8f83-4015-b8f0-ab67ad16b305" />
+<img width="975" height="540" alt="image" src="https://github.com/user-attachments/assets/58e2f4db-3c8b-4775-9b0f-395da0b47d1d" />
+
+
 
 ---
 
@@ -153,6 +207,14 @@ The model stays the same; only the memory layer changes, from self-managed Milvu
 | Access pattern | Vector search ("find similar products") | Event history, retrieval by session/actor |
 | Use case | Retrieval-Augmented Generation | Session memory and personalization |
 
+**User Input**
+<img width="975" height="578" alt="image" src="https://github.com/user-attachments/assets/167e7668-4efa-4562-9ee4-aa0562b73130" />
+
+**Trace the user's input in the colorful chat using Langfuse**
+<img width="975" height="594" alt="image" src="https://github.com/user-attachments/assets/a94d3dc9-4454-4c3b-a310-4fdbcd1bb94f" />
+
+
+
 In practice: `agentcore_memory.recent_turns` is called at the start of a turn to recall context, and `agentcore_memory.record_turn` is called at the end to persist it — enabling multi-turn context (e.g., "Has either of them shipped yet?" correctly resolving across two previously mentioned orders) without operating a vector database yourself.
 
 ### Multi-Agent + A2A (Integrated)
@@ -161,8 +223,17 @@ The same **Orchestrator → Order Agent / Product Agent / Sandbox Agent** A2A pa
 ### Evaluation → Amazon Bedrock AgentCore Evaluations
 Custom evaluators (e.g., a tool-grounded `cs_accuracy` "Retail order-accuracy evaluator") are created directly in **Amazon Bedrock AgentCore → Evaluations**, running against traces delivered via CloudWatch (Transaction Search / GenAI Observability), replacing the Langfuse-hosted evaluator pipeline used in the self-managed track.
 
+<img width="975" height="469" alt="image" src="https://github.com/user-attachments/assets/e43b878e-cf15-4ada-9db2-62ec24026cb0" />
+
+
 ### Observability → Amazon CloudWatch
 Agent spans (OpenTelemetry) flow into **CloudWatch Logs / GenAI Observability**, where they can be queried and visualized (e.g., span counts over time via CloudWatch Logs Insights) as the managed alternative to self-hosted Langfuse tracing.
+<img width="975" height="445" alt="image" src="https://github.com/user-attachments/assets/2771e799-a190-49f5-87dd-43a1e88247e7" />
+<img width="975" height="445" alt="image" src="https://github.com/user-attachments/assets/b1d47fa0-ccaf-4ee1-9208-7e0ca8d298fd" />
+<img width="975" height="447" alt="image" src="https://github.com/user-attachments/assets/482f9daa-7fab-44e2-a75e-a8fc7dda88f3" />
+
+
+
 
 **Key takeaway of Section 2:** Amazon Bedrock AgentCore provides production infrastructure — runtime, memory, identity, gateway, observability, and evaluations — around agents you still build with the Strands SDK. Strands is the agent-building SDK; AgentCore is the managed operations layer for running those agents in production.
 
