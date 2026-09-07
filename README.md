@@ -38,8 +38,13 @@ Customer Agent (Integrated GenAI)
 <img width="975" height="165" alt="image" src="https://github.com/user-attachments/assets/32857f41-6bd5-4ee3-bcc5-4dc7a3810d30" />
 <img width="975" height="183" alt="image" src="https://github.com/user-attachments/assets/49ce275f-433e-4c16-8d66-b09fb0c425d9" />
 <img width="975" height="232" alt="image" src="https://github.com/user-attachments/assets/6ad5c055-2aab-41f4-a568-380d418c29af" />
-
 <img width="975" height="360" alt="image" src="https://github.com/user-attachments/assets/be048246-5461-430c-ab14-4f941a798cd2" />
+<img width="975" height="331" alt="image" src="https://github.com/user-attachments/assets/ba13f5f6-0329-4a1b-985b-49535cc73131" />
+<img width="975" height="418" alt="image" src="https://github.com/user-attachments/assets/be46a386-82e1-45ad-a7ac-79a64f943827" />
+<img width="975" height="471" alt="image" src="https://github.com/user-attachments/assets/cf7a5c7e-e3c3-4102-a499-6a1280095ef5" />
+
+
+
 
 
 
